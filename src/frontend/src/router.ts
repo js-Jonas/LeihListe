@@ -4,6 +4,7 @@ import InventoryList from './views/InventoryList.vue'
 import Settings from './views/Settings.vue'
 import BorrowingOverview from './views/BorrowingOverview.vue'
 import { APP_TITLE } from "./config.ts";
+import LoginView from './views/LoginView.vue';
 
 const routes = [
   {
@@ -23,6 +24,12 @@ const routes = [
     name: 'BorrowingOverview',
     meta: { title: APP_TITLE + " - Ausleihen" },
     component: BorrowingOverview
+  },
+  {
+    path:'/login',
+    name:'Login',
+    meta: { title: APP_TITLE + " - Login"},
+    component: LoginView
   }
 ]
 
