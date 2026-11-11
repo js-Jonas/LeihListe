@@ -74,10 +74,35 @@ const passwordRules = [
         return 'Passwort erforderlich'
     },
 ]
+
 // TODO Platzhalter, bis Schbittstelle im Backend da 
 async function login(email: string, password: string) {
-    console.log('Login-Versuch für', email, password.length)
-    throw new Error('Login ist noch nicht an das Backend angebunden.')
+    const response = await fetch(
+        'http://127.0.0.1:8000/api/auth/login',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+        throw {
+            response: {
+                status: response.status,
+                data
+            }
+        }
+    }
+
+    return data
 }
 
 async function submitLogin() {

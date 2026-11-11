@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel, Session
-from routers import items, customers, borrowings
+from routers import items, customers, borrowings, auth
 from dependencies import write_starting_data
 from database import engine
 
@@ -32,4 +32,8 @@ app.include_router(
 
 app.include_router(
     borrowings.router
+)
+
+app.include_router(
+    auth.router
 )

@@ -27,6 +27,8 @@ class Customer(SQLModel, table=True):
     """
     customer_id: int | None= Field(default=None, primary_key=True)
     customer_name: str = Field()
+    email: str = Field(unique=True, index=True)
+    password: str
 
 class BorrowingBase(SQLModel):
     """
