@@ -170,7 +170,7 @@ Sequenzdiagramme zeigen, wie Komponenten bei typischen Abläufen zusammenarbeite
 Dokumentiert werden hier nur die wichtigsten und komplexesten Flüsse —
 nicht jede einfache CRUD-Operation.
 
-=== Item ausleihen
+=== Item ausleihen (alt)
 
 Zeigt wie ein Item erfolgreich ausgeliehen wird.
 
@@ -193,6 +193,58 @@ db --> router : Item (isBorrowed = false)
 router -> db : isBorrowed auf true setzen und speichern
 db --> router : gespeichertes Item
 router --> user : 200 OK – ausgeliehenes Item
+
+@enduml
+....
+
+---
+
+=== Item ausleihen (neu)
+
+Zeigt wie ein Item erfolgreich ausgeliehen wird.
+
+//Beispielhaftes Sequenzdiagramm für den Buchungsprozess
+//Die tatsächlichen Flüsse müssen auf das konkrete Projekt zugeschnitten sein
+
+[plantuml, sequence-borrow, svg]
+....
+@startuml borrow-item-class-diagram-soll-kompakt
+
+skinparam classAttributeIconSize 0
+skinparam nodesep 40
+skinparam ranksep 45
+hide empty members
+
+class InventoryList <<Vue View>> #FFF3B0
+
+class ItemsRouter <<APIRouter /api/items>> #FFF3B0 {
+  +borrow_item(item_id, token)
+}
+
+class BorrowingService #C8E6C9 {
+  +borrow(item_id, token)
+}
+
+class AuthService #C8E6C9 {
+  +get_current_customer(token)
+}
+
+class Item <<table>>
+
+class Borrowing <<table>> #FFF3B0 {
+  +customer_id : int
+}
+
+class Customer <<table>> #FFF3B0
+
+InventoryList -down-> ItemsRouter : ruft per HTTP auf
+ItemsRouter -down-> BorrowingService : ruft auf
+BorrowingService -right-> AuthService : ermittelt Customer
+BorrowingService .down.> Item : lädt und ändert
+BorrowingService .down.> Borrowing : erzeugt
+AuthService .down.> Customer : lädt
+Borrowing -left-> Item : gehört zu
+Borrowing -right-> Customer : ausgeliehen von
 
 @enduml
 ....
